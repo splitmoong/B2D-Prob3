@@ -1,6 +1,23 @@
-import pandas as pd
+import numpy as np
+import joblib
+from sklearn.preprocessing import MinMaxScaler
 
-dataset = pd.read_csv("../dataset/dataset.csv")
-print(dataset.head())
+model = joblib.load("../model/lstm_patrol_model.keras")
 
-print(dataset["AREA NAME"].unique())
+scaler = MinMaxScaler(feature_range=(0, 1))
+
+
+def predict_patrol(input_features):
+
+    try:
+        input_scaled = scaler.fit_transform(input_features)
+        input_reshaped = np.reshape(input_scaled, (input_scaled.shape[0], 1, input_scaled.shape[1]))
+        prediction = model.predict(input_reshaped)[0]
+        needs_patrol = "SEND MORE PATROL!!!" if prediction >= 0.5 else "Patrol Frequency Remains the Same"
+
+        return {
+            "prediction_value": float(prediction),
+            "result": needs_patrol
+        }
+    except Exception as e:
+        return {"error": str(e)}

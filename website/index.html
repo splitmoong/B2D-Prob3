@@ -119,7 +119,15 @@
             <input type="time" id="time" required>
             <button type="submit">Get Prediction</button>
         </form>
-        <p id="result"></p>
+        <div id="result-box" style="
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+            text-align: center;
+            font-weight: bold;
+            display: none;">
+        </div>
     </div>
 
     <script>
@@ -128,10 +136,7 @@
             let data = {
                 date: document.getElementById("date").value,
                 time: document.getElementById("time").value,
-                area: document.getElementById("area").value,
-                feature1: parseFloat(document.getElementById("feature1").value),
-                feature3: parseFloat(document.getElementById("feature3").value),
-                feature4: parseFloat(document.getElementById("feature4").value)
+                area: document.getElementById("area").value
             };
             let response = await fetch("http://127.0.0.1:8000/predict/", {
                 method: "POST",
@@ -139,7 +144,9 @@
                 body: JSON.stringify(data)
             });
             let result = await response.json();
-            document.getElementById("result").innerText = "Prediction: " + result.prediction;
+            let resultBox = document.getElementById("result-box");
+            resultBox.innerText = "Prediction: " + result.prediction;
+            resultBox.style.display = "block"; // Make it visible
         });
     </script>
 </body>
