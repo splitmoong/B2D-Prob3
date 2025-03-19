@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: -10px; /* Slightly moves the white box up */
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .car-image {
+            width: 150px;
+            height: auto;
+            display: block;
+            margin-bottom: -42px;
+        }
+
+        input {
+            width: calc(100% - 20px);
+            max-width: 280px;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: calc(100% - 20px);
+            font-size: 16px;
+            margin-top: 20px; /* Creates a gap between text boxes and button */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <img src="../website/assets/car.png" alt="Car Image" class="car-image">
+    <div class="container">
+        <h2>Predict Patrol Need</h2>
+        <form id="predict-form">
+            <input type="number" id="feature1" placeholder="Area" required>
+            <input type="number" id="feature2" placeholder="Time" required>
+            <input type="number" id="feature3" placeholder="Feature 3" required>
+            <input type="number" id="feature4" placeholder="Feature 4" required>
+            <button type="submit">Get Prediction</button>
+        </form>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        document.getElementById("predict-form").addEventListener("submit", async (event) => {
+            event.preventDefault();
+            let data = {
+                feature1: parseFloat(document.getElementById("feature1").value),
+                feature2: parseFloat(document.getElementById("feature2").value),
+                feature3: parseFloat(document.getElementById("feature3").value),
+                feature4: parseFloat(document.getElementById("feature4").value)
+            };
+            let response = await fetch("http://127.0.0.1:8000/predict/", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(data)
+            });
+            let result = await response.json();
+            document.getElementById("result").innerText = "Prediction: " + result.prediction;
+        });
+    </script>
+</body>
+</html>
