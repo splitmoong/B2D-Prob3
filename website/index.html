@@ -131,23 +131,42 @@
     </div>
 
     <script>
-        document.getElementById("predict-form").addEventListener("submit", async (event) => {
-            event.preventDefault();
-            let data = {
-                date: document.getElementById("date").value,
-                time: document.getElementById("time").value,
-                area: document.getElementById("area").value
-            };
-            let response = await fetch("http://127.0.0.1:8000/predict/", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(data)
+        document.getElementById("predict-form").addEventListener("submit",
+            async (event) => {
+                event.preventDefault();
+
+                let data = {
+                    date: document.getElementById("date").value,
+                    time: document.getElementById("time").value,
+                    area: document.getElementById("area").value
+                };
+
+                try {
+                    let response = await fetch("http://127.0.0.1:8000/predict/", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify(data),
+                        mode: 'cors'
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch prediction.");
+                    }
+
+                    let result = await response.json();
+                    let resultBox = document.getElementById("result-box");
+                    resultBox.innerHTML = `
+                    <p><strong>Area:</strong> ${result.area}</p>
+                    <p><strong>Time:</strong> ${result.time}</p>
+                    <p><strong>Month:</strong> ${result.month}</p>
+                    <p><strong>Day:</strong> ${result.day}</p>
+                    <p><strong>Day of Week:</strong> ${result.day}</p>
+                `;
+                    resultBox.style.display = "block";
+                } catch (error) {
+                    alert("Error: " + error.message);
+                }
             });
-            let result = await response.json();
-            let resultBox = document.getElementById("result-box");
-            resultBox.innerText = "Prediction: " + result.prediction;
-            resultBox.style.display = "block"; // Make it visible
-        });
     </script>
 </body>
 </html>

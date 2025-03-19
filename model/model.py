@@ -2,9 +2,11 @@ import numpy as np
 import joblib
 from sklearn.preprocessing import MinMaxScaler
 
-model = joblib.load("../model/lstm_patrol_model.keras")
+model = joblib.load("../api/lstm_patrol_model.keras")
 
 scaler = MinMaxScaler(feature_range=(0, 1))
+
+
 
 
 def predict_patrol(input_features):
