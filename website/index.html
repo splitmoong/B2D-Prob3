@@ -49,6 +49,18 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 16px;
+            background-color: white;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: white;
+            display: block;
         }
 
         button {
@@ -79,10 +91,32 @@
     <div class="container">
         <h2>Predict Patrol Need</h2>
         <form id="predict-form">
-            <input type="number" id="feature1" placeholder="Area" required>
-            <input type="number" id="feature2" placeholder="Time" required>
-            <input type="number" id="feature3" placeholder="Feature 3" required>
-            <input type="number" id="feature4" placeholder="Feature 4" required>
+            <input type="date" id="date" required>
+            <select id="area" required>
+                <option value="" disabled selected>Select an Area</option>
+                <option value="Wilshire">Wilshire</option>
+                <option value="Central">Central</option>
+                <option value="Southwest">Southwest</option>
+                <option value="Van Nuys">Van Nuys</option>
+                <option value="Hollenbeck">Hollenbeck</option>
+                <option value="Rampart">Rampart</option>
+                <option value="Newton">Newton</option>
+                <option value="Northeast">Northeast</option>
+                <option value="77th Street">77th Street</option>
+                <option value="Hollywood">Hollywood</option>
+                <option value="Harbor">Harbor</option>
+                <option value="West Valley">West Valley</option>
+                <option value="West LA">West LA</option>
+                <option value="N Hollywood">N Hollywood</option>
+                <option value="Pacific">Pacific</option>
+                <option value="Devonshire">Devonshire</option>
+                <option value="Mission">Mission</option>
+                <option value="Southeast">Southeast</option>
+                <option value="Olympic">Olympic</option>
+                <option value="Foothill">Foothill</option>
+                <option value="Topanga">Topanga</option>
+            </select>
+            <input type="time" id="time" required>
             <button type="submit">Get Prediction</button>
         </form>
         <p id="result"></p>
@@ -92,8 +126,10 @@
         document.getElementById("predict-form").addEventListener("submit", async (event) => {
             event.preventDefault();
             let data = {
+                date: document.getElementById("date").value,
+                time: document.getElementById("time").value,
+                area: document.getElementById("area").value,
                 feature1: parseFloat(document.getElementById("feature1").value),
-                feature2: parseFloat(document.getElementById("feature2").value),
                 feature3: parseFloat(document.getElementById("feature3").value),
                 feature4: parseFloat(document.getElementById("feature4").value)
             };
